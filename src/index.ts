@@ -28,7 +28,21 @@ function buildHeader(
     '-c',
     db.connectionString.replace(/:\/\/.*@/, '://username:password@'),
   ];
+
+  const optionKeys: (keyof OptionValues)[] = [
+    'enumPrefix',
+    'tablePrefix',
+    'enums',
+  ];
+
   if (options.camelCase) commands.push('-C');
+
+  commands.push(
+    ...(optionKeys
+      .map(key => (options[key] ? `--${key} ${options[key]}` : undefined))
+      .filter(Boolean) as string[]),
+  );
+
   if (tables.length > 0) {
     tables.forEach((t: string) => {
       commands.push('-t', t);
@@ -82,6 +96,7 @@ export async function typescriptOfSchema(
     await db.getEnumTypes(schema),
     optionsObject,
   );
+
   const interfacePromises = tables.map(table =>
     typescriptOfTable(db, table, schema, optionsObject),
   );

@@ -139,8 +139,8 @@ export function generateTableInterface(
 
   const names: TableNames = {
     var: tableVarName,
-    type: camelTableName,
-    input: camelTableName + 'Input',
+    type: `${options.options.tablePrefix ?? ''}${camelTableName}`,
+    input: `${options.options.tablePrefix ?? ''}${camelTableName}Input`,
   };
 
   return [
@@ -170,13 +170,32 @@ export function generateEnumType(
   options: Options,
 ) {
   let enumString = '';
+
   for (const enumNameRaw in enumObject) {
     const enumName = options.transformTypeName(enumNameRaw);
-    enumString += `export type ${enumName} = `;
-    enumString += enumObject[enumNameRaw]
-      .map((v: string) => `'${v}'`)
-      .join(' | ');
-    enumString += ';\n';
+
+    if (options.options.enums === 'enum') {
+      enumString += `export enum ${enumName} {`;
+      /*
+        transform enum keys to UPPER_CASE: 'user_pending' -> 'USER_PENDING'
+        
+        enum UserStatus {
+          USER_PENDING = 'user_pending',
+          USER_CREATED = 'user_created'
+        }
+      */
+      enumString += enumObject[enumNameRaw]
+        .map(v => `${v.toLocaleUpperCase()} = '${v}'`)
+        .join(',\n');
+      enumString += `}\n`;
+    } else {
+      enumString += `export type ${enumName} = `;
+      enumString += enumObject[enumNameRaw]
+        .map((v: string) => `'${v}'`)
+        .join(' | ');
+      enumString += ';\n';
+    }
   }
+
   return enumString;
 }
