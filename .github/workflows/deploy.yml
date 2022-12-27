@@ -32,8 +32,6 @@ jobs:
           registry-url: 'https://npm.pkg.github.com'
           cache: 'yarn'
 
-      - run: cat .yarnrc
-
       - name: Log versions
         run: |
           node --version
