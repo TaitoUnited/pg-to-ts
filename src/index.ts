@@ -28,8 +28,21 @@ function buildHeader(
     '-c',
     db.connectionString.replace(/:\/\/.*@/, '://username:password@'),
   ];
+
+  const optionKeys: (keyof OptionValues)[] = [
+    'enumPrefix',
+    'tablePrefix',
+    'enums',
+  ];
+
   if (options.camelCase) commands.push('-C');
-  if (options.enums) commands.push('--enums', options.enums);
+
+  commands.push(
+    ...(optionKeys
+      .map(key => (options[key] ? `--${key} ${options[key]}` : undefined))
+      .filter(Boolean) as string[]),
+  );
+
   if (tables.length > 0) {
     tables.forEach((t: string) => {
       commands.push('-t', t);

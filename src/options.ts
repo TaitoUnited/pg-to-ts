@@ -21,6 +21,10 @@ export type OptionValues = {
   prefixWithSchemaNames?: boolean;
   /** Whether to generate enums as literal types (type Enum = 'value1' | 'value2' ...) or enums (enum Enum { ... }) */
   enums?: 'literal' | 'enum';
+  /** String to prefix table names with */
+  tablePrefix?: string;
+  /** String to prefix enum names with */
+  enumPrefix?: string;
 };
 
 export default class Options {
@@ -31,7 +35,10 @@ export default class Options {
   }
 
   transformTypeName(typename: string) {
-    return this.options.camelCase ? upperFirst(camelCase(typename)) : typename;
+    const name = this.options.camelCase
+      ? upperFirst(camelCase(typename))
+      : typename;
+    return `${this.options.enumPrefix ?? ''}${name}`;
   }
 
   transformColumnName(columnName: string) {

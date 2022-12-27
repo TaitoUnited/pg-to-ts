@@ -139,8 +139,8 @@ export function generateTableInterface(
 
   const names: TableNames = {
     var: tableVarName,
-    type: camelTableName,
-    input: camelTableName + 'Input',
+    type: `${options.options.tablePrefix ?? ''}${camelTableName}`,
+    input: `${options.options.tablePrefix ?? ''}${camelTableName}Input`,
   };
 
   return [
@@ -184,7 +184,9 @@ export function generateEnumType(
           USER_CREATED = 'user_created'
         }
       */
-      enumString += enumObject[enumNameRaw].map(v => `${v.toLocaleUpperCase()} = '${v}'`).join(',\n')
+      enumString += enumObject[enumNameRaw]
+        .map(v => `${v.toLocaleUpperCase()} = '${v}'`)
+        .join(',\n');
       enumString += `}\n`;
     } else {
       enumString += `export type ${enumName} = `;
