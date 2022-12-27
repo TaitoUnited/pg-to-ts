@@ -343,4 +343,3 @@ coverage/
 *.map
 .DS_Store
 
-dist/
