@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.2.0 (2022/12/27) (forked)
+
+- New options:
+  - `--enums <type>`: specify how enum types should be generated. Leaving this unset or specifying `literal` generates the familiar old string literal types (e.g. `type EnumType = 'value1' | 'value2'`). Specifying `enum` generates enum-declarations (`enum EnumType { VALUE1 = 'value1' }`).
+  - `--enumPrefix <prefix>`, `--tablePrefix <prefix>`: specify prefix to be added to the enum or table type names.
+
 ## 4.1.0 (2022/04/02)
 
 - New option: `--prefixWithSchemaNames`. This adds the schema as a prefix to
