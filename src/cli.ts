@@ -8,6 +8,7 @@ import yargs from 'yargs/yargs';
 import {hideBin} from 'yargs/helpers';
 import fs from 'fs';
 import {typescriptOfSchema} from './index';
+import { EnumOption } from './options';
 
 const argv = yargs(hideBin(process.argv))
   .usage('Usage: $0 <command> [options]')
@@ -84,6 +85,13 @@ const argv = yargs(hideBin(process.argv))
           describe: 'Do not write header',
           type: 'boolean',
         },
+        enums: {
+          describe:
+            "Determine how enum values should be generated. 'literal' to generate string literal union types (default behaviour) " +
+            "or 'enum' to generate enum-declarations.",
+          type: 'string',
+          choices: ['literal', 'enum'],
+        },
       });
     },
   )
@@ -104,6 +112,7 @@ const argv = yargs(hideBin(process.argv))
       datesAsStrings: argv.datesAsStrings,
       jsonTypesFile: argv.jsonTypesFile,
       prefixWithSchemaNames: argv.prefixWithSchemaNames,
+      enums: argv.enums as EnumOption,
     },
   );
   fs.writeFileSync(argv.output, formattedOutput);

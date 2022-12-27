@@ -5,7 +5,10 @@ const DEFAULT_OPTIONS: OptionValues = {
   camelCase: false,
   datesAsStrings: false,
   prefixWithSchemaNames: false,
+  enums: 'literal',
 };
+
+export type EnumOption = 'literal' | 'enum';
 
 export type OptionValues = {
   camelCase?: boolean;
@@ -16,6 +19,8 @@ export type OptionValues = {
   jsonTypesFile?: string;
   /** Prefix the tablenames with the schema name. */
   prefixWithSchemaNames?: boolean;
+  /** Whether to generate enums as literal types (type Enum = 'value1' | 'value2' ...) or enums (enum Enum { ... }) */
+  enums?: 'literal' | 'enum';
 };
 
 export default class Options {

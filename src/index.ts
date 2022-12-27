@@ -29,6 +29,7 @@ function buildHeader(
     db.connectionString.replace(/:\/\/.*@/, '://username:password@'),
   ];
   if (options.camelCase) commands.push('-C');
+  if (options.enums) commands.push('--enums', options.enums);
   if (tables.length > 0) {
     tables.forEach((t: string) => {
       commands.push('-t', t);
@@ -82,6 +83,7 @@ export async function typescriptOfSchema(
     await db.getEnumTypes(schema),
     optionsObject,
   );
+
   const interfacePromises = tables.map(table =>
     typescriptOfTable(db, table, schema, optionsObject),
   );
